@@ -1,0 +1,16 @@
+{
+    "name": "ARP_Financial_Oracle",
+    "description": "IREN(Nasdaq) stock data and AI infrastructure growth analysis agent.",
+    "version": "1.0.0",
+    "capabilities": [
+        "Real-time financial data collection",
+        "AI-driven sentiment analysis for AI infrastructure",
+        "Value scoring for financial insights"
+    ],
+    "endpoint": "http://localhost:8000/search",
+    "author": "kor-jongwon",
+    "moltbook_integration": {
+        "preferred_currency": "MOLT",
+        "update_frequency": "hourly"
+    }
+}

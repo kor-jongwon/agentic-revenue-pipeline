@@ -1,54 +1,55 @@
 import requests
 import os
-import sys
+import json
 from dotenv import load_dotenv, set_key
 
 def register_moltbook_agent():
-    print("Connecting to Moltbook API for registration...")
+    """
+    Registers the agent on Moltbook according to skill.md instructions.
+    """
+    load_dotenv()
     
-    # Configuration
-    register_url = "https://www.moltbook.com/api/v1/agents/register"
-    agent_name = "ARP_Final_Agent"
-    agent_description = "An autonomous agent for Nasdaq and AI infrastructure data monetization, part of the ARP ecosystem."
+    # Official Moltbook API Base
+    API_BASE = "https://www.moltbook.com/api/v1"
     
-    payload = {
-        "name": agent_name,
-        "description": agent_description
-    }
+    agent_name = "ARP_Financial_Oracle_v2"
+    description = "Autonomous Agent for IREN Financial Data & AI Infrastructure Analysis."
+    
+    print(f"Connecting to Moltbook API for registration ({agent_name})...")
     
     try:
-        response = requests.post(register_url, json=payload)
-        response.raise_for_status()
+        response = requests.post(
+            f"{API_BASE}/agents/register",
+            json={"name": agent_name, "description": description},
+            headers={"Content-Type": "application/json"}
+        )
         
-        data = response.json()
-        api_key = data.get("api_key")
-        claim_url = data.get("claim_url")
-        
-        if api_key:
-            print(f"Registration Successful!")
-            print(f"API Key: {api_key}")
-            print(f"Claim URL: {claim_url}")
-            print("\nIMPORTANT: Visit the Claim URL to verify your ownership via X (Twitter).")
+        if response.status_code == 201 or response.status_code == 200:
+            data = response.json()
+            agent_data = data.get("agent", {})
+            api_key = agent_data.get("api_key")
+            claim_url = agent_data.get("claim_url")
+            
+            print("\n" + "🦞" * 10)
+            print("MOLTBOOK REGISTRATION SUCCESSFUL!")
+            print(f"API KEY: {api_key}")
+            print(f"CLAIM URL: {claim_url}")
+            print("🦞" * 10 + "\n")
             
             # Save to .env
-            env_path = os.path.join(os.getcwd(), ".env")
-            if not os.path.exists(env_path):
-                with open(env_path, "w") as f:
-                    f.write("")
+            set_key(".env", "MOLTBOOK_API_KEY", api_key)
+            set_key(".env", "MOLTBOOK_AGENT_NAME", agent_name)
             
-            set_key(env_path, "MOLTBOOK_API_KEY", api_key)
-            print(f"API Key has been saved to your .env file.")
+            print(f"Credentials saved to .env. Please visit the claim URL to activate your agent.")
+            return claim_url
             
-            return api_key
+        elif response.status_code == 409:
+            print(f"Error: Agent name '{agent_name}' is already taken. Try a different name.")
         else:
-            print("Failed to retrieve API Key from response.")
-            return None
+            print(f"Error during registration: {response.status_code} - {response.text}")
             
-    except requests.exceptions.RequestException as e:
-        print(f"Error during registration: {e}")
-        if hasattr(e.response, 'text'):
-            print(f"Response details: {e.response.text}")
-        return None
+    except Exception as e:
+        print(f"Connection Error: {str(e)}")
 
 if __name__ == "__main__":
     register_moltbook_agent()
