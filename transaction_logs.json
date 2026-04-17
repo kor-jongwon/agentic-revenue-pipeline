@@ -4,5 +4,12 @@
         "success": true,
         "value": 8.5,
         "product_id": "MOLT-SIM-999"
+    },
+    {
+        "timestamp": "2026-04-17T07:20:58Z",
+        "success": true,
+        "value": 8.5,
+        "product_id": "MOLT-SIM-999",
+        "snapshot_file": "snapshot_20260417_072058.json"
     }
 ]

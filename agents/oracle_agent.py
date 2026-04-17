@@ -38,8 +38,10 @@ class OracleAgent(BaseAgent):
             data = {
                 "symbol": "IREN",
                 "name": "Iris Energy Limited",
+                "source_url": self.target_url,
+                "collection_method": "Crawl4AI + Playwright (Markdown)",
                 "raw_markdown": markdown_content[:500] + "...",
-                "source": "Google Finance via Crawl4AI",
+                "source": "Google Finance",
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "status": "success",
                 "full_content_length": len(markdown_content)

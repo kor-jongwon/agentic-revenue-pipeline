@@ -1,0 +1,22 @@
+{
+    "cycle": 1,
+    "timestamp": "2026-04-17T07:20:58Z",
+    "product_id": "MOLT-SIM-999",
+    "raw_data": {
+        "symbol": "IREN",
+        "name": "Iris Energy Limited",
+        "raw_markdown": "[Finance](https://www.google.com/finance/)\nFinance\n[Finance](https://www.google.com/finance/)\n[](https://www.google.co.kr/intl/en/about/products?tab=eh)\n[Sign in](https://accounts.google.com/ServiceLogin?passive=1209600&continue=https://www.google.com/finance/quote/IREN:NASDAQ&followup=https://www.google.com/finance/quote/IREN:NASDAQ&ec=GAZAGw)\n[![](https://ssl.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg)Finance](https://www.google.com/finance/)\n[_finance_mode_ Home](ht...",
+        "source": "Google Finance via Crawl4AI",
+        "timestamp": "2026-04-17T07:20:57Z",
+        "status": "success",
+        "full_content_length": 12915
+    },
+    "refined_insight": {
+        "extracted_price": "Simulated $12.50",
+        "extracted_change": "+2.4%",
+        "analysis": "Data contains positive momentum for IREN AI growth.",
+        "value_score": 0.85,
+        "product_name": "IREN_Alpha_IREN",
+        "key_insight": "AI infrastructure demand is outpacing supply."
+    }
+}
