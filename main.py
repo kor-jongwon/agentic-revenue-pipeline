@@ -22,8 +22,12 @@ def run_pipeline():
     merchant = MerchantAgent()
     result = merchant.run(refined_data)
     
-    print("\n✅ Pipeline Cycle Completed.")
-    print(f"Summary: {result['message']} - ID: {result['product_id']}")
+    print("\n" + "="*50)
+    print("✅ Pipeline Cycle Completed.")
+    print(f"💰 Result: {result['message']}")
+    print(f"📦 Product ID: {result['product_id']}")
+    print(f"💵 Price: {result['price']}")
+    print("="*50)
 
 if __name__ == "__main__":
     run_pipeline()
