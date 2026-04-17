@@ -59,3 +59,12 @@ class PipelineMonitor:
         
         with open(self.logs_path, "w", encoding="utf-8") as f:
             json.dump(logs, f, indent=4, ensure_ascii=False)
+
+    def get_summary(self):
+        uptime = time.time() - self.start_time
+        return {
+            "uptime_seconds": round(uptime, 2),
+            "total_cycles": self.total_cycles,
+            "success_rate": f"{(self.success_count / self.total_cycles * 100):.1f}%" if self.total_cycles > 0 else "0%",
+            "total_value_molt": round(self.total_value_generated, 2)
+        }
