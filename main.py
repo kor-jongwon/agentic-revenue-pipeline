@@ -7,11 +7,13 @@ from agents.oracle_agent import OracleAgent
 from agents.refiner_agent import RefinerAgent
 from agents.merchant_agent import MerchantAgent
 from core.monitor import PipelineMonitor
+from core.vector_store import ARPVectorStore
 
 # Load environment variables
 load_dotenv()
 
 monitor = PipelineMonitor()
+vector_store = ARPVectorStore()
 
 def handle_exit(sig, frame):
     print("\n👋 Gracefully shutting down ARP Pipeline...")
@@ -40,6 +42,13 @@ def run_pipeline_cycle():
         # 3. Merchant: List Data
         merchant = MerchantAgent()
         result = merchant.run(refined_data)
+        
+        # 4. VectorStore: Store for RAG
+        vector_store.add_insight(
+            product_id=result.get("product_id"),
+            raw_text=raw_data.get("raw_markdown"),
+            analysis_json=refined_data.get("refined_insight")
+        )
         
         # Record Success
         value = float(result.get("price", "0").split()[0])

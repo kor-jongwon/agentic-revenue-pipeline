@@ -13,3 +13,4 @@ venv.bak/
 *.log
 *.md
 data_snapshots/
+chroma_db/

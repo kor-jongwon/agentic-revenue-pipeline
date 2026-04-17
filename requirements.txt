@@ -1,5 +1,7 @@
 crawl4ai
 playwright
+chromadb
+sentence-transformers
 python-dotenv
 requests
 litellm
