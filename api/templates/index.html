@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARP Command Center | Agentic Revenue Pipeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #05050a;
+            color: #e0e0e0;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+        .neon-border {
+            position: relative;
+        }
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe, #00f2fe);
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.3;
+            border-radius: inherit;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            border-color: rgba(0, 242, 254, 0.4);
+        }
+        .bg-grid {
+            background-image: radial-gradient(rgba(79, 172, 254, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-grid min-h-screen">
+    <nav class="p-6 border-b border-white/5 glass sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center pulse">
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <h1 class="orbitron text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500">
+                    ARP COMMAND CENTER
+                </h1>
+            </div>
+            <div class="flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span>
+                    <span class="text-green-400 font-semibold uppercase tracking-wider">System Live</span>
+                </div>
+                <button onclick="updateAll()" class="hover:text-cyan-400 transition-colors">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-10 px-6">
+        <!-- Stats Row -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="glass stats-card p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm mb-1 uppercase tracking-widest">Total Value</p>
+                <h2 id="stat-value" class="orbitron text-3xl font-bold text-cyan-400">0.0 MOLT</h2>
+            </div>
+            <div class="glass stats-card p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm mb-1 uppercase tracking-widest">Cycles Run</p>
+                <h2 id="stat-cycles" class="orbitron text-3xl font-bold text-white">0</h2>
+            </div>
+            <div class="glass stats-card p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm mb-1 uppercase tracking-widest">Success Rate</p>
+                <h2 id="stat-success" class="orbitron text-3xl font-bold text-green-400">0%</h2>
+            </div>
+            <div class="glass stats-card p-6 rounded-2xl">
+                <p class="text-gray-400 text-sm mb-1 uppercase tracking-widest">Last Activity</p>
+                <h2 id="stat-updated" class="text-lg font-medium text-blue-300">Just now</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left: Transaction Feed -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-center px-2">
+                    <h3 class="orbitron text-xl font-bold flex items-center">
+                        <i class="fas fa-stream text-cyan-500 mr-2"></i> Activity Feed
+                    </h3>
+                </div>
+                <div id="log-feed" class="space-y-4">
+                    <!-- Logs injection -->
+                    <div class="animate-pulse text-gray-500">Loading system nodes...</div>
+                </div>
+            </div>
+
+            <!-- Right: Search & RAG -->
+            <div class="space-y-6">
+                <div class="glass p-8 rounded-2xl neon-border">
+                    <h3 class="orbitron text-lg font-bold mb-4 flex items-center">
+                        <i class="fas fa-brain text-purple-400 mr-2"></i> Vector Memory Search
+                    </h3>
+                    <div class="relative">
+                        <input id="search-input" type="text" placeholder="Search insights..." 
+                            class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-cyan-500 transition-all">
+                        <button onclick="performSearch()" class="absolute right-3 top-3 text-cyan-400">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-2xl">
+                    <h3 class="orbitron text-lg font-bold mb-4">Pipeline Status</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                            <span class="text-sm">Oracle Agent</span>
+                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Active</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                            <span class="text-sm">Refiner Agent</span>
+                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Active</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
+                            <span class="text-sm">Merchant Agent</span>
+                            <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">Dry Run</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = "http://localhost:8000";
+
+        async function updateStats() {
+            try {
+                const res = await fetch(`${API_BASE}/stats`);
+                const data = await res.json();
+                document.getElementById('stat-value').innerText = `${data.total_value} MOLT`;
+                document.getElementById('stat-cycles').innerText = data.total_cycles;
+                document.getElementById('stat-success').innerText = data.success_rate;
+                document.getElementById('stat-updated').innerText = data.last_updated || "N/A";
+            } catch (err) { console.error(err); }
+        }
+
+        async function updateLogs() {
+            try {
+                const res = await fetch(`${API_BASE}/logs`);
+                const logs = await res.json();
+                const feed = document.getElementById('log-feed');
+                feed.innerHTML = logs.map(log => `
+                    <div class="glass p-5 rounded-2xl flex justify-between items-center border-l-4 ${log.success ? 'border-green-500' : 'border-red-500'}">
+                        <div>
+                            <p class="text-xs text-gray-500">${new Date(log.timestamp).toLocaleString()}</p>
+                            <h4 class="font-bold text-white">${log.product_id || 'System Event'}</h4>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold ${log.success ? 'text-cyan-400' : 'text-red-400'}">
+                                ${log.success ? '+' + log.value + ' MOLT' : 'FAILED'}
+                            </p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('search-input').value;
+            if (!query) return;
+            const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+            const results = await res.json();
+            alert("Search Results Found: " + results.ids[0].length + " items. (Check console for detail)");
+            console.log(results);
+        }
+
+        function updateAll() {
+            updateStats();
+            updateLogs();
+        }
+
+        // Interval updates
+        updateAll();
+        setInterval(updateAll, 5000);
+    </script>
+</body>
+</html>

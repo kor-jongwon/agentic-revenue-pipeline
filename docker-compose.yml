@@ -1,13 +1,26 @@
 version: '3.8'
 
 services:
+  # 1. ARP Pipeline Agent
   arp-agent:
     build: .
-    container_name: arp_pipeline_container
+    container_name: arp_pipeline_agent
     env_file:
       - .env
     volumes:
       - .:/app
+    command: python main.py
     restart: always
-    # If the user wants to keep the container running for scheduled tasks
-    # we can use a sleep or a scheduler in the python script.
+
+  # 2. ARP Management Dashboard
+  arp-dashboard:
+    build: .
+    container_name: arp_dashboard
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: python api/main.py
+    depends_on:
+      - arp-agent
+    restart: always
