@@ -1,6 +1,5 @@
-selenium
-webdriver-manager
+crawl4ai
+playwright
 python-dotenv
 requests
 litellm
-# Add other dependencies here as needed

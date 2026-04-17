@@ -1,81 +1,62 @@
 from .base_agent import BaseAgent
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from crawl4ai import WebCrawler
 import json
 import time
+import asyncio
 
 class OracleAgent(BaseAgent):
     """
     The Oracle Agent: Responsible for data ingestion.
-    Collects real-time financial data for IREN (Iris Energy) and AI infrastructure.
+    Now using Crawl4AI + Playwright for highly efficient, LLM-friendly data extraction.
     """
     def __init__(self):
-        super().__init__("Oracle Agent", "Data Ingestor")
+        super().__init__("Oracle Agent", "Modern Data Ingestor")
         self.target_url = "https://www.google.com/finance/quote/IREN:NASDAQ"
 
-    def _setup_driver(self):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--window-size=1920,1080")
-        
-        # In a Docker environment, the binary location might be fixed
-        # chrome_options.binary_location = "/usr/bin/google-chrome"
-        
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        return driver
+    async def _async_crawl(self):
+        """
+        Asynchronously crawl the target URL using Crawl4AI.
+        """
+        async with WebCrawler() as crawler:
+            # We use 'markdown' as it's the most agentic format for LLMs
+            result = await crawler.arun(url=self.target_url)
+            return result
 
     def run(self):
-        self.log(f"Starting detailed data collection from {self.target_url}")
-        driver = None
+        self.log(f"Starting Agentic Crawling from {self.target_url} using Crawl4AI")
+        
         try:
-            driver = self._setup_driver()
-            driver.get(self.target_url)
+            # Running the async crawler in a synchronous context for simplicity in the main loop
+            result = asyncio.run(self._async_crawl())
             
-            # Wait for price element to be visible
-            # Google Finance price class usually starts with 'YMl54e' or similar, 
-            # but let's use a more robust selector.
-            wait = WebDriverWait(driver, 10)
-            price_element = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div[class*="YMl54e"]')))
-            
-            price = price_element.text
-            title = driver.title
-            
-            # Try to get percentage change
-            try:
-                change_element = driver.find_element(By.CSS_SELECTOR, 'div[class*="Jw7Xth"]')
-                change = change_element.text
-            except:
-                change = "N/A"
+            if not result.success:
+                raise Exception(f"Crawl failed: {result.error_message}")
 
+            # Extract structured data from markdown or use result.extracted_content if available
+            # For IREN specifically, we can extract the price from the markdown
+            markdown_content = result.markdown
+            
+            # Simple simulation of data extraction from markdown for this example
+            # In a real scenario, we would pass this markdown to the Refiner Agent
+            self.log("Successfully crawled page and converted to Markdown.")
+            
             data = {
                 "symbol": "IREN",
                 "name": "Iris Energy Limited",
-                "price": price,
-                "change": change,
-                "source": "Google Finance",
+                "raw_markdown": markdown_content[:500] + "...", # Truncated for log
+                "source": "Google Finance via Crawl4AI",
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "status": "success"
+                "status": "success",
+                "full_content_length": len(markdown_content)
             }
             
-            self.log(f"Successfully collected data: {price} ({change})")
             return data
 
         except Exception as e:
-            self.log(f"Error during collection: {str(e)}")
+            self.log(f"Error during agentic crawling: {str(e)}")
             return {
                 "symbol": "IREN",
                 "status": "error",
                 "error": str(e),
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             }
-        finally:
-            if driver:
-                driver.quit()
