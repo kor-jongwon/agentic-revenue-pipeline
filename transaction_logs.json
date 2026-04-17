@@ -11,5 +11,19 @@
         "value": 8.5,
         "product_id": "MOLT-SIM-999",
         "snapshot_file": "snapshot_20260417_072058.json"
+    },
+    {
+        "timestamp": "2026-04-17T07:21:06Z",
+        "success": true,
+        "value": 8.5,
+        "product_id": "MOLT-SIM-999",
+        "snapshot_file": "snapshot_20260417_072106.json"
+    },
+    {
+        "timestamp": "2026-04-17T07:21:14Z",
+        "success": true,
+        "value": 8.5,
+        "product_id": "MOLT-SIM-999",
+        "snapshot_file": "snapshot_20260417_072114.json"
     }
 ]

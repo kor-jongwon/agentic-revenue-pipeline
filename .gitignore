@@ -12,3 +12,4 @@ venv.bak/
 .vscode/
 *.log
 *.md
+data_snapshots/
