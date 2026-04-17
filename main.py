@@ -43,7 +43,13 @@ def run_pipeline_cycle():
         
         # Record Success
         value = float(result.get("price", "0").split()[0])
-        monitor.record_cycle(True, value, result.get("product_id"))
+        monitor.record_cycle(
+            success=True, 
+            value=value, 
+            product_id=result.get("product_id"),
+            raw_data=raw_data,
+            refined_insight=refined_data.get("refined_insight")
+        )
         
         print("\n" + "="*50)
         print("✅ Cycle Completed Successfully.")
