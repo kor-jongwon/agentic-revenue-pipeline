@@ -1,6 +1,11 @@
+import os
+from dotenv import load_dotenv
 from agents.oracle_agent import OracleAgent
 from agents.refiner_agent import RefinerAgent
 from agents.merchant_agent import MerchantAgent
+
+# Load environment variables from .env file
+load_dotenv()
 
 def run_pipeline():
     print("🚀 Starting Agentic Revenue Pipeline (ARP)...")

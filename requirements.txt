@@ -1,0 +1,5 @@
+selenium
+python-dotenv
+requests
+litellm
+# Add other dependencies here as needed

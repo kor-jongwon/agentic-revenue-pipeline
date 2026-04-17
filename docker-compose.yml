@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  arp-agent:
+    build: .
+    container_name: arp_pipeline_container
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: always
+    # If the user wants to keep the container running for scheduled tasks
+    # we can use a sleep or a scheduler in the python script.
